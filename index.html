@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Freekitlab — 소개</title>
+<meta name="description" content="Freekitlab 소개 페이지">
+<meta name="color-scheme" content="dark">
+<meta property="og:title" content="Freekitlab — 소개">
+<meta property="og:image" content="images/profile.jpg">
+<style>
+:root {
+  --bg: #000;
+  --fg: #fff;
+  --muted: #ccc;
+  --surface: rgba(255,255,255,0.08);
+  --border: rgba(255,255,255,0.15);
+  --accent: #5daaff;
+  --radius: 14px;
+  --shadow: 0 10px 30px rgba(0,0,0,.6);
+}
+* {box-sizing:border-box;}
+html {scroll-behavior:smooth;}
+body,html,#app {margin:0;width:100%;height:100%;}
+body {
+  font-family: 'Segoe UI', Roboto, Noto Sans KR, sans-serif;
+  background: var(--bg);
+  color: var(--fg);
+  line-height: 1.6;
+}
+a {color: var(--accent);text-decoration:none;}
+img {max-width:100%;display:block;border-radius:var(--radius);}
+#canvas {position:fixed;inset:0;z-index:-1;overflow:hidden;opacity:0.6;}
+
+/* Hero */
+.hero-full {
+  height:100vh;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;padding:0 20px;
+}
+.hero-title {font-size:64px;font-weight:800;margin:0;}
+.hero-sub {font-size:20px;color:#ddd;margin:10px 0 20px;}
+.hero-cta {display:inline-block;padding:12px 18px;border:1px solid #fff;border-radius:10px;}
+@media (max-width:900px){.hero-title{font-size:44px;}}
+
+/* Header */
+.site-header{position:sticky;top:0;z-index:10;backdrop-filter:blur(10px);background:rgba(0,0,0,0.4);}
+.site-header .bar{max-width:1080px;margin:0 auto;padding:12px 20px;
+  display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid var(--border);}
+.brand{font-weight:900;color:var(--fg);}
+.nav a{margin-left:16px;color:var(--muted);font-weight:700;}
+.nav a:hover{color:var(--fg);}
+@media (max-width:900px){.nav{display:none;}}
+
+/* Intro */
+.intro{max-width:1080px;margin:0 auto;padding:60px 20px;display:grid;grid-template-columns:1.2fr .8fr;gap:28px;align-items:center;}
+.profile{width:300px;aspect-ratio:1/1;margin:auto;border-radius:50%;overflow:hidden;border:2px solid var(--accent);}
+.intro h3{margin:0 0 10px;font-size:28px;}
+.intro p{margin:0;color:var(--muted);}
+@media(max-width:900px){.intro{grid-template-columns:1fr;text-align:center;}}
+
+/* Sections */
+.section{max-width:1080px;margin:0 auto;padding:60px 20px;border-top:1px solid var(--border);}
+.section h2{font-size:26px;margin-bottom:16px;}
+.section-sub{margin:0 0 22px;color:var(--muted);}
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+@media(max-width:900px){.grid-2{grid-template-columns:1fr;}}
+
+/* Card */
+.card{background:var(--surface);padding:20px;border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);}
+.card h3{margin:0 0 8px;}
+.card:hover{border-color:var(--accent);}
+
+/* Details */
+.list details{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;}
+.list summary{cursor:pointer;font-weight:700;}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;}
+.step h4{margin:0 0 8px;}
+@media(max-width:900px){.steps{grid-template-columns:1fr;}}
+
+/* Table */
+.table-wrap{overflow:auto;border-radius:var(--radius);border:1px solid var(--border);background:var(--surface);}
+table{width:100%;border-collapse:collapse;}
+th,td{padding:12px 14px;border-bottom:1px solid var(--border);}
+thead th{background:rgba(255,255,255,0.08);color:#aaa;text-align:left;}
+tbody tr:nth-child(odd){background:rgba(255,255,255,0.04);}
+tbody tr:hover{background:rgba(255,255,255,0.1);}
+
+/* Footer */
+footer{max-width:1080px;margin:0 auto;padding:40px 20px;border-top:1px solid var(--border);color:var(--muted);text-align:center;}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+
+<div id="app" class="hero-full">
+  <h1 class="hero-title">Freekitlab</h1>
+  <p class="hero-sub">요식업 자동화·로봇 솔루션을 큐레이션하고, 데이터 기반 컨설팅으로 실질적 ROI를 만듭니다.</p>
+  <a class="hero-cta" href="#vision">더 알아보기</a>
+</div>
+
+<header class="site-header">
+  <div class="bar">
+    <div class="brand">Freekitlab</div>
+    <nav class="nav">
+      <a href="#vision">비전·미션</a>
+      <a href="#challenges">당면과제</a>
+      <a href="#solution">솔루션·핵심전략</a>
+      <a href="#growth">플랫폼 성장전략</a>
+      <a href="#kpi">KPI</a>
+    </nav>
+  </div>
+</header>
+
+<section class="intro">
+  <div>
+    <h3>한 줄 소개</h3>
+    <p>Freekitlab은 요식업 자동화·로봇 솔루션을 큐레이션하고, 현장 데이터 기반 컨설팅으로 <strong>예측 가능한 ROI</strong>를 제공하는 플랫폼입니다.</p>
+  </div>
+  <div class="profile"><img src="images/profile.jpg" alt="Profile"></div>
+</section>
+
+<section id="vision" class="section">
+  <h2>비전과 미션</h2>
+  <p class="section-sub">데이터와 자동화로 자영업의 생존과 성장률을 높이는 플랫폼.</p>
+  <div class="grid-2">
+    <div class="card">
+      <h3>비전 (Vision)</h3>
+      <p>작은 가게도 데이터와 자동화로 ‘안정적인 수익과 삶의 질’을 누리는 시대를 만든다.</p>
+    </div>
+    <div class="card">
+      <h3>미션 (Mission)</h3>
+      <ul>
+        <li>검증된 자동화 장비와 운영지표를 연결하는 <strong>표준 흐름</strong> 제공</li>
+        <li>End-to-End 지원으로 <strong>리스크 최소화</strong></li>
+        <li>현장 데이터를 축적해 <strong>예측 가능한 ROI</strong> 제시</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="challenges" class="section">
+  <h2>당면과제</h2>
+  <div class="list">
+    <details open><summary>공급사·SKU 확보와 신뢰성</summary>
+      <p>국내·중국 장비의 스펙·AS 편차, 딜러 구조의 불투명성으로 인한 정보 비대칭.</p>
+    </details>
+    <details><summary>구매 의사결정의 불확실성</summary>
+      <p>장비·운영 데이터가 분절되어 실제 현금흐름 개선 효과를 가늠하기 어려움.</p>
+    </details>
+    <details><summary>설치·운영·AS의 병목</summary>
+      <p>설치 표준화·원격 모니터링·부품 수급/AS 리드타임 단축 필요.</p>
+    </details>
+  </div>
+</section>
+
+<section id="solution" class="section">
+  <h2>솔루션과 핵심전략</h2>
+  <div class="grid-2">
+    <div class="card">
+      <h3>솔루션</h3>
+      <ul>
+        <li><strong>레퍼런스 번들</strong> (예: 자동 기름 교환기 + 후드 관리 키트)</li>
+        <li><strong>ROI 시뮬레이터</strong>와 <strong>설치 표준서</strong></li>
+        <li><strong>중고 장비 인증·매입대행</strong>, QR 매뉴얼, AS 티켓</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>핵심전략</h3>
+      <ul>
+        <li><strong>신뢰</strong>: 데이터 공개·리뷰 표준화</li>
+        <li><strong>속도</strong>: 템플릿 설치·원격 지원</li>
+        <li><strong>확장성</strong>: 셀러·컨설턴트 네트워크 강화</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="growth" class="section">
+  <h2>플랫폼 성장전략</h2>
+  <div class="steps">
+    <div class="step"><h4>1) 초기가설 검증</h4><p>니치 카테고리 중심으로 전환 사례 확보.</p></div>
+    <div class="step"><h4>2) 데이터 축적·상품화</h4><p>ROI 리포트·중고 인증으로 신뢰 자산 확보.</p></div>
+    <div class="step"><h4>3) 네트워크 확장</h4><p>셀러·컨설턴트 랭킹, 그룹바이·API 연동 강화.</p></div>
+  </div>
+</section>
+
+<section id="kpi" class="section">
+  <h2>KPI</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>분류</th><th>정의</th><th>핵심 관점</th></tr></thead>
+      <tbody>
+        <tr><td>전환율</td><td>리드→견적→설치 완료 비율</td><td>카테고리별 비교</td></tr>
+        <tr><td>리드타임</td><td>주문→가동까지 기간</td><td>설치 효율성 개선</td></tr>
+        <tr><td>재구매율</td><td>설치 90/180일 내 추가 구매</td><td>ROI 달성률 연계</td></tr>
+        <tr><td>AS 지표</td><td>첫 고장 TTF·수리 TAT</td><td>벤더 품질 관리</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<footer>© <span id="year"></span> Freekitlab</footer>
+
+<script type="module">
+import TubesCursor from "https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js";
+const app = TubesCursor(document.getElementById('canvas'), {
+  tubes:{colors:["#5daaff","#00ffff","#ffffff"],lights:{intensity:200,colors:["#aaf","#0ff","#fff"]}}
+});
+function rc(n){return Array.from({length:n},()=>"#"+Math.floor(Math.random()*16777215).toString(16).padStart(6,"0"));}
+document.body.addEventListener('click',()=>{const c=rc(3),l=rc(4);app.tubes.setColors(c);app.tubes.setLightsColors(l);});
+document.getElementById('year').textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
