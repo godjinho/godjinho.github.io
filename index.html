@@ -2,215 +2,650 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
 <title>Freekitlab — 자동화 · 로봇 솔루션 플랫폼</title>
 <meta name="description" content="Freekitlab 소개 및 랜딩: 헤드라인·핵심기능·FAQ.">
-<meta name="color-scheme" content="dark">
-<meta property="og:title" content="Freekitlab — 자동화 · 로봇 솔루션 플랫폼">
-<meta property="og:description" content="요식업 자동화·로봇 솔루션을 큐레이션하고 데이터 기반 컨설팅으로 ROI를 만듭니다.">
-<meta property="og:image" content="image/프리킷랩.jpg">
+
 <style>
+/* =========================
+   Design Tokens / Resets
+   ========================= */
 :root{
   --bg:#000; --fg:#fff; --muted:#d9d9d9; --accent:#5daaff;
   --surface:rgba(255,255,255,.08); --border:rgba(255,255,255,.18);
-  --radius:16px; --shadow:0 12px 36px rgba(0,0,0,.6);
+  --radius:16px; --radius-sm:12px; --shadow:0 12px 36px rgba(0,0,0,.6);
   --container:1120px;
+
+  /* Typography scales */
+  --font-base: clamp(15px, 1.7vw, 16.5px);
+  --font-lead: clamp(16px, 2vw, 18px);
+  --font-h1: clamp(28px, 7vw, 40px);
+  --font-h1-hero: clamp(32px, 8.5vw, 56px);
+  --font-h2: clamp(20px, 4.5vw, 26px);
+  --font-h3: clamp(16px, 3.5vw, 18px);
+
+  /* Touch target */
+  --tap-min: 44px;
+
+  /* Safe area paddings */
+  --safe-top: env(safe-area-inset-top);
+  --safe-right: env(safe-area-inset-right);
+  --safe-bottom: env(safe-area-inset-bottom);
+  --safe-left: env(safe-area-inset-left);
 }
+
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body,html,#app{margin:0;width:100%;height:100%}
+html,body{height:100%}
 body{
-  font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Noto Sans KR,Apple SD Gothic Neo,Arial,sans-serif;
-  background:#000;color:#fff;line-height:1.6;
+  margin:0;
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Apple SD Gothic Neo, Arial, sans-serif;
+  background:#000; color:#fff;
+  font-size: var(--font-base);
+  line-height: 1.7;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: rgba(255,255,255,0);
 }
-a{color:var(--fg);text-decoration:none}
-img{max-width:100%;display:block}
-#canvas{position:fixed;inset:0;z-index:-1;opacity:.55}
+img{max-width:100%; height:auto; display:block}
+a{color:#fff; text-decoration:none}
+:focus-visible{outline: 2px solid #9ec5ff; outline-offset: 2px}
+.container{max-width: var(--container); margin: 0 auto; padding: 0 20px}
 
-/* header */
-.site-header{position:sticky;top:0;z-index:10;background:rgba(0,0,0,.45);backdrop-filter:blur(8px);border-bottom:1px solid var(--border)}
-.bar{max-width:var(--container);margin:0 auto;padding:12px 20px;display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:900;letter-spacing:.3px}
-.nav a{margin-left:16px;color:#e6e6e6;font-weight:700}
-.nav a:hover{color:#fff}
-@media (max-width:900px){.nav{display:none}}
+/* Background canvas */
+#canvas{position:fixed; inset:0; z-index:-1; opacity:.5;}
 
-/* hero */
-.hero{min-height:88vh;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 20px}
-.hero-inner{max-width:920px;margin:0 auto}
-.h-title{font-size:56px;font-weight:900;margin:0 0 12px}
-.h-sub{font-size:20px;color:#ddd;margin:0 0 26px}
-.h-cta{display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center}
+/* =========================
+   Header / Navigation
+   ========================= */
+.site-header{
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(0,0,0,.6); backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--border);
+  padding-top: max(8px, var(--safe-top));
+}
+.header-bar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px; padding: 10px 20px;
+}
+.brand{
+  font-weight: 900; letter-spacing:.3px;
+  font-size: clamp(18px, 4.5vw, 22px);
+  line-height: 1; padding: 6px 4px;
+}
+
+/* Desktop nav */
+.nav{display:flex; align-items:center; gap: 6px;}
+.nav a{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-height: var(--tap-min);
+  padding: 10px 14px; border-radius: 10px;
+  color: var(--muted); font-weight: 700; letter-spacing:.2px;
+}
+.nav a:hover{ color:#fff; background: rgba(255,255,255,.08) }
+
+/* Mobile nav button */
+.nav-toggle{
+  display:none; align-items:center; justify-content:center;
+  min-width: var(--tap-min); min-height: var(--tap-min);
+  padding: 10px; border-radius: 12px; border: 1px solid var(--border);
+  background: transparent; color: #fff; cursor: pointer;
+}
+.nav-toggle[aria-expanded="true"]{background: rgba(255,255,255,.12)}
+@media (max-width: 900px){
+  .nav{display:none}
+  .nav-toggle{display:inline-flex}
+}
+
+/* Mobile nav drawer */
+.mobile-nav{display:none; border-top:1px solid var(--border); background: rgba(0,0,0,.7); backdrop-filter: blur(6px);}
+.mobile-nav a{
+  display:block; padding: 14px 20px; min-height: var(--tap-min);
+  border-bottom:1px solid var(--border); color: var(--muted); font-weight: 700;
+}
+.mobile-nav a:last-child{border-bottom:0}
+.mobile-nav a:hover{ color:#fff; background: rgba(255,255,255,.08) }
+
+/* =========================
+   Hero
+   ========================= */
+.hero{
+  min-height: 100svh;
+  display:flex; align-items:center; justify-content:center;
+  text-align:center; padding: 0 20px;
+  padding-bottom: max(20px, var(--safe-bottom));
+}
+.hero-inner{max-width: 920px; margin: 0 auto}
+.h-title{margin:0 0 10px; font-size: var(--font-h1-hero); font-weight: 900; line-height: 1.15;}
+.h-sub{margin:0 0 20px; color:#e6e6e6; font-size: var(--font-lead);}
+.h-cta{display:flex; gap: 12px; flex-wrap:wrap; justify-content:center}
 .btn{
-  display:inline-block;padding:12px 18px;border-radius:12px;border:1px solid #fff;
-  transition:transform .15s ease, background .15s ease, color .15s ease;
+  display:inline-flex; align-items:center; justify-content:center;
+  min-height: var(--tap-min); padding: 14px 18px; border-radius: 14px; border:1px solid #fff;
+  font-weight: 800; letter-spacing:.2px;
+  transition: transform .15s ease, background .15s ease, color .15s ease;
 }
-.btn:hover{transform:translateY(-1px);background:#fff;color:#000}
-.btn.secondary{border-color:var(--accent);color:#fff}
-.btn.secondary:hover{background:var(--accent);color:#000}
+.btn:hover{ transform: translateY(-1px); background:#fff; color:#000 }
+.btn.secondary{ border-color: var(--accent); }
+.btn.secondary:hover{ background: var(--accent); color:#000 }
 
-/* intro band */
-.band{border-top:1px solid var(--border);border-bottom:1px solid var(--border);
-  background:radial-gradient(1200px 200px at 50% 0%, rgba(93,170,255,.2), transparent 60%)}
-.container{max-width:var(--container);margin:0 auto;padding:0 20px}
-.intro{display:grid;grid-template-columns:1.1fr .9fr;gap:28px;align-items:center;padding:46px 0}
-.intro .lead{color:#dcdcdc}
-.profile{width:320px;max-width:100%;aspect-ratio:1/1;margin-left:auto;border-radius:50%;overflow:hidden;border:2px solid var(--accent);box-shadow:var(--shadow)}
-@media (max-width:900px){.intro{grid-template-columns:1fr;text-align:center}.profile{margin:24px auto 0}}
+/* =========================
+   Intro band (profile)
+   ========================= */
+.band{border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+  background: radial-gradient(1200px 240px at 50% 0%, rgba(93,170,255,.22), transparent 60%);}
+.intro{
+  display:grid; grid-template-columns: 1.1fr .9fr; gap: 24px; align-items:center;
+  padding: 42px 0;
+}
+.intro h2{ margin: 0 0 6px; font-size: var(--font-h2) }
+.intro .lead{ margin:0; color:#dcdcdc; font-size: var(--font-lead) }
+.profile{
+  width: min(320px, 85vw); aspect-ratio: 1/1;
+  margin-left: auto; margin-right: 0;
+  border-radius: 50%; overflow: hidden;
+  border: 2px solid var(--accent); box-shadow: var(--shadow);
+}
+@media (max-width: 900px){
+  .intro{ grid-template-columns: 1fr; text-align: center }
+  .profile{ margin: 16px auto 0 }
+}
 
-/* sections */
-.section{padding:64px 0;border-top:1px solid var(--border)}
-.section h2{font-size:26px;margin:0 0 10px}
-.section .sub{margin:0 0 24px;color:#d0d0d0}
+/* =========================
+   Sections / Layout
+   ========================= */
+.section{ padding: 56px 0; border-top: 1px solid var(--border) }
+.section h2{ font-size: var(--font-h2); margin: 0 0 10px }
+.section .sub{ margin: 0 0 20px; color: #d0d0d0; font-size: var(--font-lead) }
 
-/* core features */
-.features{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.features{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
 .card{
-  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
-  padding:20px;box-shadow:var(--shadow);transition:transform .2s ease,border-color .2s ease
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow);
+  transition: transform .2s ease, border-color .2s ease;
 }
-.card:hover{transform:translateY(-2px);border-color:#5daaff}
-.card h3{margin:0 0 8px;font-size:18px}
-.badge{display:inline-block;font-size:12px;padding:4px 8px;border:1px solid var(--border);border-radius:999px;color:#bbb;margin-bottom:10px}
+.card:hover{ transform: translateY(-2px); border-color: #5daaff }
+.card h3{ margin: 0 0 8px; font-size: var(--font-h3) }
+.badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding: 6px 10px; min-height: var(--tap-min);
+  border: 1px solid var(--border); border-radius: 999px; color: #bbb;
+  font-size: clamp(11px, 2.5vw, 12px); margin-bottom: 8px;
+}
 
-/* mock */
-.mock{margin-top:14px;border:1px dashed rgba(255,255,255,.35);border-radius:12px;padding:12px;background:linear-gradient(180deg,rgba(255,255,255,.05),rgba(255,255,255,.02))}
-.mock .bar{height:10px;border-radius:6px;background:rgba(255,255,255,.2);margin-bottom:10px}
-.mock .row{display:grid;grid-template-columns:2fr 1fr;gap:8px;margin-bottom:8px}
-.mock .box{height:46px;border-radius:10px;background:rgba(255,255,255,.1)}
-.mock .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.mock .tile{height:60px;border-radius:10px;background:rgba(255,255,255,.12)}
+.mock{ margin-top: 12px; border: 1px dashed rgba(255,255,255,.35); border-radius: 12px; padding: 10px;
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02)); }
+.mock .bar{ height: 10px; border-radius: 6px; background: rgba(255,255,255,.2); margin-bottom: 10px }
+.mock .row{ display:grid; grid-template-columns: 2fr 1fr; gap: 8px; margin-bottom: 8px }
+.mock .box{ height: 46px; border-radius: 10px; background: rgba(255,255,255,.1) }
+.mock .grid{ display:grid; grid-template-columns: repeat(3,1fr); gap: 8px }
+.mock .tile{ height: 60px; border-radius: 10px; background: rgba(255,255,255,.12) }
 
-/* steps */
-.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.step{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:18px;position:relative}
-.step:before{content:"";position:absolute;left:-1px;right:-1px;top:-1px;height:3px;border-top-left-radius:var(--radius);border-top-right-radius:var(--radius);background:linear-gradient(90deg,#5daaff,#9ae6ff)}
-.step h4{margin:0 0 8px}
-@media (max-width:900px){.features,.steps{grid-template-columns:1fr}}
+@media (max-width: 900px){
+  .features{ grid-template-columns: 1fr }
+}
 
-/* faq */
-.faq{display:grid;grid-template-columns:1fr;gap:12px}
-.faq details{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
-.faq summary{cursor:pointer;font-weight:800}
+/* Steps */
+.steps{ display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+.step{
+  background:var(--surface); border:1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; position: relative;
+}
+.step:before{
+  content:""; position:absolute; left:-1px; right:-1px; top:-1px; height:3px;
+  border-top-left-radius: var(--radius); border-top-right-radius: var(--radius);
+  background: linear-gradient(90deg, #5daaff, #9ae6ff);
+}
+.step h4{ margin: 0 0 6px; font-size: var(--font-h3) }
+@media (max-width: 900px){
+  .steps{ grid-template-columns: 1fr }
+}
 
-/* table */
-.table-wrap{overflow:auto;border-radius:12px;border:1px solid var(--border);background:var(--surface)}
-table{width:100%;border-collapse:collapse}
-th,td{padding:12px 14px;border-bottom:1px solid var(--border)}
-thead th{background:rgba(255,255,255,.08);color:#bdbdbd;text-align:left}
-tbody tr:nth-child(odd){background:rgba(255,255,255,.04)}
+/* FAQ */
+.faq{ display:grid; grid-template-columns: 1fr; gap: 10px }
+.faq details{
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius-sm); padding: 12px;
+}
+.faq summary{
+  cursor: pointer; font-weight: 900; min-height: var(--tap-min);
+  display:flex; align-items:center;
+}
 
-/* final cta */
-.final{padding:56px 20px;border-top:1px solid var(--border);text-align:center}
-.final .big{font-size:28px;margin:0 0 10px}
-.final .desc{margin:0 0 22px;color:#d6d6d6}
-.final .cta{display:inline-block;padding:14px 20px;border-radius:12px;border:1px solid #fff}
-.final .cta:hover{background:#fff;color:#000}
+/* Table (KPI) */
+.table-wrap{ overflow:auto; border-radius: 12px; border:1px solid var(--border); background:var(--surface) }
+table{ width:100%; border-collapse: collapse; font-variant-numeric: tabular-nums }
+th,td{ padding: 12px 14px; border-bottom:1px solid var(--border) }
+thead th{ background: rgba(255,255,255,.08); color:#bdbdbd; text-align:left; position: sticky; top: 0 }
+tbody tr:nth-child(odd){ background: rgba(255,255,255,.04) }
+tbody tr:hover{ background: rgba(255,255,255,.08) }
 
-/* footer */
-footer{max-width:var(--container);margin:0 auto;padding:40px 20px;border-top:1px solid var(--border);color:#cfcfcf;text-align:center}
-small a{color:#9ec5ff}
+/* Final CTA */
+.final{ padding: 52px 20px; border-top:1px solid var(--border); text-align:center }
+.final .big{ font-size: clamp(22px, 6vw, 28px); margin: 0 0 8px; line-height: 1.35 }
+.final .desc{ margin: 0 0 18px; color: #d6d6d6; font-size: var(--font-lead) }
+.final .cta{
+  display:inline-flex; align-items:center; justify-content:center;
+  min-height: var(--tap-min); padding: 14px 20px;
+  border-radius: 14px; border:1px solid #fff; font-weight: 900;
+}
+.final .cta:hover{ background:#fff; color:#000 }
+
+/* Footer */
+footer{
+  max-width: var(--container); margin: 0 auto; padding: 36px 20px;
+  border-top:1px solid var(--border); color:#cfcfcf; text-align:center;
+  padding-bottom: max(36px, var(--safe-bottom));
+}
+small a{ color:#9ec5ff }
+
+/* =========================
+   Contact Modal (30초 상담)
+   ========================= */
+.modal{
+  position: fixed; inset: 0; z-index: 50; display: none;
+  align-items: center; justify-content: center;
+  padding: 20px; background: rgba(0,0,0,.6); backdrop-filter: blur(4px);
+}
+.modal[open]{ display: flex; }
+.modal-card{
+  width: min(620px, 96vw);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+  color: var(--fg);
+}
+.modal-header{
+  display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom: 8px;
+}
+.modal-title{ font-size: var(--font-h2); margin: 0; }
+.modal-close{
+  min-width: var(--tap-min); min-height: var(--tap-min);
+  border: 1px solid var(--border); border-radius: 12px; background: transparent; color: #fff; cursor: pointer;
+}
+.form{ display:grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form .full{ grid-column: 1 / -1; }
+label{ display:block; font-weight: 800; margin: 6px 0; }
+input, textarea{
+  width: 100%; color: #fff; background: rgba(255,255,255,.06);
+  border: 1px solid var(--border); border-radius: 12px;
+  padding: 12px 14px; line-height: 1.6; font-size: 16px;
+}
+textarea{ min-height: 110px; resize: vertical; }
+.helper{ color: #bdbdbd; font-size: 13px; margin-top: 2px; }
+.form-actions{ display:flex; gap: 10px; justify-content:flex-end; margin-top: 6px; }
+.form button{
+  min-height: var(--tap-min); padding: 12px 16px; border-radius: 12px; border: 1px solid #fff; background: transparent; color: #fff; font-weight: 900; cursor: pointer;
+}
+.form button.primary{ background: #fff; color: #000; border-color: #fff; }
+.form button.secondary{ border-color: var(--accent); }
+@media (max-width: 720px){
+  .form{ grid-template-columns: 1fr; }
+}
+
+/* Toast */
+.toast{
+  position: fixed; left: 50%; bottom: max(16px, var(--safe-bottom));
+  transform: translateX(-50%);
+  background: #111; color: #fff; border: 1px solid var(--border); border-radius: 10px;
+  padding: 10px 14px; box-shadow: var(--shadow);
+  opacity: 0; pointer-events: none; transition: opacity .2s ease;
+  z-index: 60;
+}
+.toast.show{ opacity: 1; }
 </style>
 </head>
 <body>
 
-<canvas id="canvas"></canvas>
+<!-- Background (optional animated tubes via JS) -->
+<canvas id="canvas" aria-hidden="true"></canvas>
 
-<header class="site-header">
-  <div class="bar">
+<!-- Header -->
+<header class="site-header" role="banner">
+  <div class="header-bar container">
     <div class="brand">Freekitlab</div>
-    <nav class="nav">
+
+    <!-- Desktop nav -->
+    <nav class="nav" aria-label="주요">
       <a href="#features">핵심기능</a>
       <a href="#process">도입절차</a>
       <a href="#faq">FAQ</a>
       <a href="#cta">문의</a>
     </nav>
+
+    <!-- Mobile nav toggle -->
+    <button class="nav-toggle" aria-label="메뉴 열기" aria-controls="mobile-nav" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" role="img" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </button>
   </div>
+
+  <!-- Mobile nav drawer -->
+  <nav id="mobile-nav" class="mobile-nav" aria-label="모바일 메뉴">
+    <a href="#features">핵심기능</a>
+    <a href="#process">도입절차</a>
+    <a href="#faq">FAQ</a>
+    <a href="#cta">문의</a>
+  </nav>
 </header>
 
+<!-- Hero -->
 <section class="hero" id="top">
-  <div class="hero-inner">
-    <h1 class="h-title">사장님이 ‘로봇 경영자’가 되는 길</h1>
+  <div class="hero-inner container" role="region" aria-labelledby="hero-title">
+    <h1 id="hero-title" class="h-title">사장님이 ‘로봇 경영자’가 되는 길</h1>
     <p class="h-sub">요식업 자동화·로봇 솔루션을 큐레이션하고, 데이터 기반 컨설팅으로 <strong>예측 가능한 ROI</strong>를 만듭니다.</p>
     <div class="h-cta">
       <a class="btn" href="#features">핵심기능 보기</a>
-      <a class="btn secondary" href="#cta">도입 상담 요청</a>
+      <!-- 변경: 버튼을 모달 오픈으로 전환 -->
+      <button id="open-contact" class="btn secondary" type="button" aria-haspopup="dialog" aria-controls="contact-modal">30초 상담 요청하기</button>
     </div>
   </div>
 </section>
 
+<!-- Intro (Profile) -->
 <div class="band">
-  <section class="intro container">
+  <section class="intro container" aria-labelledby="intro-title">
     <div>
-      <h2 style="margin:0 0 8px">한 줄 소개</h2>
+      <h2 id="intro-title">한 줄 소개</h2>
       <p class="lead">Freekitlab은 솔루션 수집–컨설팅–End-to-End 동반자십을 결합해, 자영업자의 노동·비용 구조를 <strong>린(Lean)</strong>하게 재설계합니다.</p>
     </div>
-    <div class="profile">
-      <img src="image/프리킷랩.jpg" alt="Freekitlab Profile" loading="lazy">
+    <div class="profile" role="img" aria-label="Freekitlab Profile Image">
+      <img src="images/프리킷랩.jpg" alt="Freekitlab Profile" loading="lazy" decoding="async">
     </div>
   </section>
 </div>
 
-<section id="features" class="section container">
-  <h2>핵심기능</h2>
+<!-- Core Features -->
+<section id="features" class="section container" aria-labelledby="features-title">
+  <h2 id="features-title">핵심기능</h2>
   <p class="sub">앱 구성 로직을 중심으로 구매자·셀러·컨설턴트가 만나는 단일 플랫폼.</p>
+
   <div class="features">
-    <article class="card"><span class="badge">구매자용 쇼핑몰</span><h3>장비 탐색·견적·결제까지 원스톱</h3></article>
-    <article class="card"><span class="badge">셀러 Admin</span><h3>상품·주문·정산 자동화</h3></article>
-    <article class="card"><span class="badge">컨설턴트 Hub</span><h3>리드–실적–정산 대시보드</h3></article>
+    <article class="card" aria-labelledby="f1">
+      <span class="badge" aria-hidden="true">구매자용 쇼핑몰</span>
+      <h3 id="f1">장비 탐색·견적·결제까지 원스톱</h3>
+      <ul>
+        <li>로그인/회원가입(소셜), 카테고리/검색, 상세/후기</li>
+        <li>장바구니–PG 연동 결제, 주문/배송 추적</li>
+        <li>마이페이지: 주문·찜·1:1문의·리뷰·정부지원 게시판</li>
+      </ul>
+      <div class="mock" aria-hidden="true">
+        <div class="bar"></div>
+        <div class="row"><div class="box"></div><div class="box"></div></div>
+        <div class="grid"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+      </div>
+    </article>
+
+    <article class="card" aria-labelledby="f2">
+      <span class="badge" aria-hidden="true">셀러 Admin</span>
+      <h3 id="f2">상품·주문·정산 자동화</h3>
+      <ul>
+        <li>입점 신청/계약/정산계좌 등록</li>
+        <li>상품 등록·관리, 주문→발주→송장→배송 상태</li>
+        <li>기간별 정산·수수료, 배너/프로모션 신청</li>
+      </ul>
+      <div class="mock" aria-hidden="true">
+        <div class="bar"></div>
+        <div class="row"><div class="box"></div><div class="box"></div></div>
+        <div class="row"><div class="box"></div><div class="box"></div></div>
+      </div>
+    </article>
+
+    <article class="card" aria-labelledby="f3">
+      <span class="badge" aria-hidden="true">컨설턴트 Hub</span>
+      <h3 id="f3">리드–실적–정산 대시보드</h3>
+      <ul>
+        <li>컨설턴트 신청/정보 관리, 역할 기반 권한(RBAC)</li>
+        <li>실적/매출 현황, 파트너 등급·후기 관리</li>
+        <li>정산 내역·세금계산서 연동, 알림톡/이메일</li>
+      </ul>
+      <div class="mock" aria-hidden="true">
+        <div class="bar"></div>
+        <div class="grid"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
+      </div>
+    </article>
   </div>
 </section>
 
-<section id="process" class="section container">
-  <h2>도입 절차</h2>
+<!-- Process -->
+<section id="process" class="section container" aria-labelledby="process-title">
+  <h2 id="process-title">도입 절차</h2>
+  <p class="sub">첫 설계부터 설치·운영·정산까지 End-to-End 동반자십.</p>
   <div class="steps">
-    <div class="step"><h4>1) 진단 & 번들 제안</h4><p>업종·규모·근무조 기반 진단 → 레퍼런스 번들/ROI 시나리오 제시.</p></div>
-    <div class="step"><h4>2) 견적 & 지원금</h4><p>PG 연동 견적·결제 옵션, 정부지원 컨설팅/서류 가이드.</p></div>
-    <div class="step"><h4>3) 설치 & 운영</h4><p>설치 표준서, 원격 모니터링, AS 티켓·중고 매입보장 옵션.</p></div>
+    <div class="step">
+      <h4>1) 진단 & 번들 제안</h4>
+      <p>업종·규모·근무조 기반 진단 → 레퍼런스 번들/ROI 시나리오 제시.</p>
+    </div>
+    <div class="step">
+      <h4>2) 견적 & 지원금</h4>
+      <p>PG 연동 견적·결제 옵션, 정부지원 컨설팅/서류 가이드.</p>
+    </div>
+    <div class="step">
+      <h4>3) 설치 & 운영</h4>
+      <p>설치 표준서, 원격 모니터링, AS 티켓·중고 매입보장 옵션.</p>
+    </div>
   </div>
 </section>
 
-<section id="faq" class="section container">
-  <h2>FAQ</h2>
+<!-- FAQ -->
+<section id="faq" class="section container" aria-labelledby="faq-title">
+  <h2 id="faq-title">FAQ</h2>
   <div class="faq">
-    <details open><summary>정부 지원금 상담도 해주나요?</summary><p>네. 스마트상점/자동화 보조금 등 적합 사업을 매칭하고 신청·서류 작성 가이드를 제공합니다.</p></details>
-    <details><summary>중고 매입보장은 어떻게 작동하나요?</summary><p>제조사와 공동부담 정책 합의 시 ‘중고 매입보장’ Tag를 부여합니다.</p></details>
-    <details><summary>정산과 수수료는 투명하게 관리되나요?</summary><p>배치 정산으로 셀러·컨설턴트 수수료를 자동 계산하고 대시보드에서 확인할 수 있습니다.</p></details>
+    <details open>
+      <summary>정부 지원금 상담도 해주나요?</summary>
+      <p>네. 스마트상점/자동화 보조금 등 적합 사업을 매칭하고 신청·서류 작성 가이드를 제공합니다. 성공 사례는 공개해 신뢰를 축적합니다.</p>
+    </details>
+    <details>
+      <summary>중고 매입보장은 어떻게 작동하나요?</summary>
+      <p>제조사와 공동부담 정책 합의 시 ‘중고 매입보장’ Tag를 부여합니다. 불가 장비도 중고 플랫폼에서 무료 노출을 지원합니다.</p>
+    </details>
+    <details>
+      <summary>정산과 수수료는 투명하게 관리되나요?</summary>
+      <p>배치 정산으로 셀러·컨설턴트 수수료를 자동 계산하고, 정산 대시보드에서 기간별 내역을 확인·증빙(세금계산서)까지 일괄 처리합니다.</p>
+    </details>
+    <details>
+      <summary>AS 품질과 리드타임 관리는 어떻게 하나요?</summary>
+      <p>AS 티켓·부품 리드타임을 지표로 관리합니다(TTF, TAT, NPS). 벤더/설치사별 편차를 추적해 지속 개선합니다.</p>
+    </details>
   </div>
 </section>
 
-<section class="section container">
-  <h2>KPI 예시</h2>
-  <div class="table-wrap">
+<!-- KPI -->
+<section class="section container" aria-labelledby="kpi-title">
+  <h2 id="kpi-title">KPI 예시</h2>
+  <div class="table-wrap" role="region" aria-label="KPI 표 스크롤 영역">
     <table>
-      <thead><tr><th>분류</th><th>정의</th><th>핵심 관점</th></tr></thead>
+      <thead>
+        <tr><th scope="col">분류</th><th scope="col">정의</th><th scope="col">핵심 관점</th></tr>
+      </thead>
       <tbody>
-        <tr><td>전환율</td><td>리드→견적→설치 완료</td><td>번들/채널별 비교</td></tr>
-        <tr><td>리드타임</td><td>주문→가동까지 일수</td><td>설치 표준 개선</td></tr>
-        <tr><td>재구매</td><td>설치 90/180일 추가 구매</td><td>ROI 실현 구간</td></tr>
+        <tr><td>전환율</td><td>리드→견적→설치 완료</td><td>번들/채널별 비교, 페이백 연동</td></tr>
+        <tr><td>리드타임</td><td>주문→가동까지 일수</td><td>설치 표준/원격 지원 전후 개선폭</td></tr>
+        <tr><td>재구매/업셀</td><td>설치 90/180일 추가 구매</td><td>ROI 실현 구간과 상관분석</td></tr>
+        <tr><td>AS 품질</td><td>TTF·TAT·NPS</td><td>벤더/설치사별 편차 관리</td></tr>
       </tbody>
     </table>
   </div>
 </section>
 
-<section id="cta" class="final">
-  <h2 class="big">사장님의 ‘로봇 경영’ 첫걸음, 오늘 시작하세요.</h2>
+<!-- Final CTA -->
+<section id="cta" class="final" aria-labelledby="cta-title">
+  <h2 id="cta-title" class="big">사장님의 ‘로봇 경영’ 첫걸음, 오늘 시작하세요.</h2>
   <p class="desc">업종·규모별 레퍼런스 번들과 지원금/중고보장 옵션까지, 한 번에 설계해 드립니다.</p>
-  <a class="cta" href="#top">30초 상담 요청하기</a>
+  <!-- 동일 CTA 버튼도 모달로 연결 -->
+  <button class="cta" id="open-contact-2" type="button" aria-haspopup="dialog" aria-controls="contact-modal">30초 상담 요청하기</button>
 </section>
 
-<footer>
+<footer role="contentinfo">
   <small>© <span id="year"></span> Freekitlab · <a href="#top">맨 위로</a></small>
 </footer>
 
+<!-- ========== Contact Modal (메일 전송: mailto) ========== -->
+<dialog class="modal" id="contact-modal" aria-labelledby="contact-title" aria-modal="true">
+  <div class="modal-card" role="document">
+    <div class="modal-header">
+      <h3 id="contact-title" class="modal-title">30초 상담 요청</h3>
+      <button class="modal-close" id="close-contact" type="button" aria-label="닫기">✕</button>
+    </div>
+
+    <!-- 간단한 문의 폼 (정적 페이지용) -->
+    <form id="contact-form" class="form" autocomplete="on">
+      <!-- honeypot (스팸 봇 방지) -->
+      <input type="text" name="company" id="hp-company" style="position:absolute;left:-9999px" tabindex="-1" aria-hidden="true">
+
+      <div>
+        <label for="name">이름</label>
+        <input id="name" name="name" type="text" inputmode="text" placeholder="홍길동" required>
+      </div>
+      <div>
+        <label for="phone">연락처</label>
+        <input id="phone" name="phone" type="tel" inputmode="tel" placeholder="010-1234-5678" required>
+      </div>
+
+      <div class="full">
+        <label for="email">이메일 (선택)</label>
+        <input id="email" name="email" type="email" inputmode="email" placeholder="you@example.com">
+        <p class="helper">제출 시 메일 앱이 열립니다. 로컬 메일 앱이 없는 경우 안내가 표시됩니다.</p>
+      </div>
+
+      <div class="full">
+        <label for="msg">간단 메모</label>
+        <textarea id="msg" name="msg" placeholder="관심 장비/매장 규모/예산 등 간단히 적어주세요." required></textarea>
+      </div>
+
+      <div class="form-actions full">
+        <button class="secondary" type="button" id="copy-fallback">내용 복사</button>
+        <button class="primary" type="submit">메일 앱 열기</button>
+      </div>
+    </form>
+  </div>
+</dialog>
+
+<!-- Toast -->
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
 <script type="module">
-import TubesCursor from "https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js";
-const app = TubesCursor(document.getElementById('canvas'), {
-  tubes:{ colors:["#5daaff","#9ae6ff","#ffffff"], lights:{ intensity:200, colors:["#aabfff","#9ae6ff","#ffffff"] } }
+/* Mobile nav toggle */
+const toggle = document.querySelector('.nav-toggle');
+const mnav  = document.getElementById('mobile-nav');
+if (toggle && mnav){
+  toggle.addEventListener('click', ()=>{
+    const exp = toggle.getAttribute('aria-expanded') === 'true';
+    toggle.setAttribute('aria-expanded', String(!exp));
+    mnav.style.display = exp ? 'none' : 'block';
+    toggle.setAttribute('aria-label', exp ? '메뉴 열기' : '메뉴 닫기');
+  });
+}
+
+/* Background (optional): Tubes Cursor; graceful fallback on WebGL-less devices */
+const cvs = document.getElementById('canvas');
+try{
+  const TubesCursor = (await import("https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js")).default;
+  const app = TubesCursor(cvs, {
+    tubes:{ colors:["#5daaff","#9ae6ff","#ffffff"], lights:{ intensity:200, colors:["#aabfff","#9ae6ff","#ffffff"] } }
+  });
+  function rc(n){return Array.from({length:n},()=>"#"+Math.floor(Math.random()*16777215).toString(16).padStart(6,"0"))}
+  document.body.addEventListener('click',()=>{const c=rc(3),l=rc(4);app.tubes.setColors(c);app.tubes.setLightsColors(l);});
+}catch(e){ if (cvs) cvs.style.display = 'none'; }
+
+/* Footer year */
+document.getElementById('year').textContent = new Date().getFullYear();
+
+/* ========= Contact Modal logic ========= */
+const modal = document.getElementById('contact-modal');
+const open1 = document.getElementById('open-contact');
+const open2 = document.getElementById('open-contact-2');
+const closeBtn = document.getElementById('close-contact');
+const form = document.getElementById('contact-form');
+const toast = document.getElementById('toast');
+const hp = document.getElementById('hp-company');
+
+function showModal(){
+  if ('showModal' in modal) modal.showModal(); else modal.setAttribute('open','');
+  setTimeout(()=>document.getElementById('name')?.focus(), 50);
+}
+function closeModal(){
+  if ('close' in modal) modal.close(); else modal.removeAttribute('open');
+}
+open1?.addEventListener('click', showModal);
+open2?.addEventListener('click', showModal);
+closeBtn?.addEventListener('click', closeModal);
+modal?.addEventListener('click', (e)=>{
+  // click outside to close
+  const rect = e.currentTarget.querySelector('.modal-card')?.getBoundingClientRect();
+  if (!rect) return;
+  const inDialog = e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom;
+  if (!inDialog) closeModal();
 });
-function rc(n){return Array.from({length:n},()=>"#"+Math.floor(Math.random()*16777215).toString(16).padStart(6,"0"))}
-document.body.addEventListener('click',()=>{const c=rc(3),l=rc(4);app.tubes.setColors(c);app.tubes.setLightsColors(l);});
-document.getElementById('year').textContent=new Date().getFullYear();
+
+/* Mailto submit */
+form?.addEventListener('submit', (e)=>{
+  e.preventDefault();
+  // honeypot check
+  if (hp?.value?.trim()) { showToast('스팸 의심 제출은 차단되었습니다.'); return; }
+
+  const name  = (document.getElementById('name').value || '').trim();
+  const phone = (document.getElementById('phone').value || '').trim();
+  const email = (document.getElementById('email').value || '').trim();
+  const msg   = (document.getElementById('msg').value || '').trim();
+
+  const subject = encodeURIComponent(`Freekitlab 30초 상담 요청 - ${name}`);
+  const bodyLines = [
+    `이름: ${name}`,
+    `연락처: ${phone}`,
+    email ? `이메일: ${email}` : null,
+    `메모: ${msg}`,
+    '',
+    '※ 본 메일은 Freekitlab 랜딩페이지에서 생성되었습니다.'
+  ].filter(Boolean);
+  const body = encodeURIComponent(bodyLines.join('\n'));
+
+  const mailto = `mailto:uzin@freekitlab.com?subject=${subject}&body=${body}`;
+
+  // 시도: 메일 앱 열기
+  try{
+    window.location.href = mailto;
+    showToast('메일 앱을 열고 있습니다…');
+    closeModal();
+  }catch(err){
+    showToast('메일 앱을 열 수 없습니다. 복사 후 직접 메일을 보내주세요.');
+  }
+});
+
+/* Copy fallback */
+document.getElementById('copy-fallback')?.addEventListener('click', ()=>{
+  const name  = (document.getElementById('name').value || '').trim();
+  const phone = (document.getElementById('phone').value || '').trim();
+  const email = (document.getElementById('email').value || '').trim();
+  const msg   = (document.getElementById('msg').value || '').trim();
+  const text = [
+    `수신: uzin@freekitlab.com`,
+    `제목: Freekitlab 30초 상담 요청 - ${name}`,
+    '',
+    `이름: ${name}`,
+    `연락처: ${phone}`,
+    email ? `이메일: ${email}` : null,
+    `메모: ${msg}`
+  ].filter(Boolean).join('\n');
+
+  navigator.clipboard?.writeText(text).then(()=>{
+    showToast('문의 내용이 클립보드에 복사되었습니다. 메일앱에서 붙여넣기 하세요.');
+  }).catch(()=>{
+    showToast('복사 실패. 텍스트를 직접 선택해 복사해 주세요.');
+  });
+});
+
+/* Toast helper */
+let toastTimer = null;
+function showToast(message){
+  toast.textContent = message;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>toast.classList.remove('show'), 2800);
+}
 </script>
 </body>
 </html>
