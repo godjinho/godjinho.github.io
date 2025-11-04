@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
 <title>Freekitlab — 자동화 · 로봇 솔루션 플랫폼</title>
-<meta name="description" content="Freekitlab 소개 및 랜딩: 헤드라인·핵심기능·FAQ.">
+<meta name="description" content="Freekitlab 소개 및 랜딩: 헤드라인·핵심약속·FAQ.">
 
 <style>
 /* =========================
@@ -40,6 +40,7 @@ html{scroll-behavior:smooth}
 html,body{height:100%}
 body{
   margin:0;
+  padding-top: 80px;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Apple SD Gothic Neo, Arial, sans-serif;
   background:#000; color:#fff;
   font-size: var(--font-base);
@@ -59,10 +60,11 @@ a{color:#fff; text-decoration:none}
    Header / Navigation
    ========================= */
 .site-header{
-  position: sticky; top: 0; z-index: 20;
-  background: rgba(0,0,0,.6); backdrop-filter: blur(10px);
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(0,0,0,.95); backdrop-filter: blur(10px);
   border-bottom:1px solid var(--border);
   padding-top: max(8px, var(--safe-top));
+  width: 100%;
 }
 .header-bar{
   display:flex; align-items:center; justify-content:space-between;
@@ -110,9 +112,9 @@ a{color:#fff; text-decoration:none}
    Hero
    ========================= */
 .hero{
-  min-height: 100svh;
+  min-height: calc(100svh - 80px);
   display:flex; align-items:center; justify-content:center;
-  text-align:center; padding: 0 20px;
+  text-align:left; padding: 0 20px;
   padding-bottom: max(20px, var(--safe-bottom));
 }
 .hero-inner{max-width: 920px; margin: 0 auto}
@@ -123,6 +125,8 @@ a{color:#fff; text-decoration:none}
   display:inline-flex; align-items:center; justify-content:center;
   min-height: var(--tap-min); padding: 14px 18px; border-radius: 14px; border:1px solid #fff;
   font-weight: 800; letter-spacing:.2px;
+  font-size: var(--font-base);
+  white-space: nowrap;
   transition: transform .15s ease, background .15s ease, color .15s ease;
 }
 .btn:hover{ transform: translateY(-1px); background:#fff; color:#000 }
@@ -146,9 +150,25 @@ a{color:#fff; text-decoration:none}
   border-radius: 50%; overflow: hidden;
   border: 2px solid var(--accent); box-shadow: var(--shadow);
 }
+.tree-image{
+  width: min(400px, 85vw);
+  margin-left: auto; margin-right: 0;
+  border-radius: 0; overflow: visible;
+  border: none; box-shadow: none;
+  position: relative;
+}
+.tree-image img{
+  width: 100%;
+  height: auto;
+  display: block;
+  mix-blend-mode: screen;
+  filter: brightness(1.05) contrast(1.1);
+  opacity: 0.95;
+}
 @media (max-width: 900px){
   .intro{ grid-template-columns: 1fr; text-align: center }
   .profile{ margin: 16px auto 0 }
+  .tree-image{ margin: 16px auto 0 }
 }
 
 /* =========================
@@ -224,12 +244,20 @@ tbody tr:hover{ background: rgba(255,255,255,.08) }
 .final{ padding: 52px 20px; border-top:1px solid var(--border); text-align:center }
 .final .big{ font-size: clamp(22px, 6vw, 28px); margin: 0 0 8px; line-height: 1.35 }
 .final .desc{ margin: 0 0 18px; color: #d6d6d6; font-size: var(--font-lead) }
+.final-actions{
+  display:flex; gap: 12px; flex-wrap:wrap; justify-content:center;
+}
 .final .cta{
   display:inline-flex; align-items:center; justify-content:center;
   min-height: var(--tap-min); padding: 14px 20px;
   border-radius: 14px; border:1px solid #fff; font-weight: 900;
+  font-size: var(--font-base);
+  white-space: nowrap;
+  transition: transform .15s ease, background .15s ease, color .15s ease;
 }
-.final .cta:hover{ background:#fff; color:#000 }
+.final .cta:hover{ transform: translateY(-1px); background:#fff; color:#000 }
+.final .cta.secondary{ border-color: var(--accent); }
+.final .cta.secondary:hover{ background: var(--accent); color:#000 }
 
 /* Footer */
 footer{
@@ -309,7 +337,7 @@ textarea{ min-height: 110px; resize: vertical; }
 
     <!-- Desktop nav -->
     <nav class="nav" aria-label="주요">
-      <a href="#features">핵심기능</a>
+      <a href="#features">핵심약속</a>
       <a href="#process">도입절차</a>
       <a href="#faq">FAQ</a>
       <a href="#cta">문의</a>
@@ -325,7 +353,7 @@ textarea{ min-height: 110px; resize: vertical; }
 
   <!-- Mobile nav drawer -->
   <nav id="mobile-nav" class="mobile-nav" aria-label="모바일 메뉴">
-    <a href="#features">핵심기능</a>
+    <a href="#features">핵심약속</a>
     <a href="#process">도입절차</a>
     <a href="#faq">FAQ</a>
     <a href="#cta">문의</a>
@@ -335,12 +363,19 @@ textarea{ min-height: 110px; resize: vertical; }
 <!-- Hero -->
 <section class="hero" id="top">
   <div class="hero-inner container" role="region" aria-labelledby="hero-title">
-    <h1 id="hero-title" class="h-title">사장님이 ‘로봇 경영자’가 되는 길</h1>
-    <p class="h-sub">요식업 자동화·로봇 솔루션을 큐레이션하고, 데이터 기반 컨설팅으로 <strong>예측 가능한 ROI</strong>를 만듭니다.</p>
+    <h1 id="hero-title" class="h-title">자동화장비/로봇 판매 플랫폼</h1>
+    <p class="h-sub">
+      <br>
+      모든 장비를 하나의 플랫폼에서 관리하세요.<br>
+      자동화 장비/로봇에 대한 정부지원금 정보를 제공합니다.<br>
+      국내외 첨단 솔루션에 대해 무료 상담 받고 특가 혜택을 누리십시오.<br>
+      프리킷랩은 구매한 장비에 대해서 폐업시까지 함께합니다.<br>
+      <br>
+    </p>
     <div class="h-cta">
-      <a class="btn" href="#features">핵심기능 보기</a>
+      <a class="btn" href="#features">핵심약속 보기</a>
       <!-- 변경: 버튼을 모달 오픈으로 전환 -->
-      <button id="open-contact" class="btn secondary" type="button" aria-haspopup="dialog" aria-controls="contact-modal">30초 상담 요청하기</button>
+      <button id="open-contact" class="btn secondary" type="button" aria-haspopup="dialog" aria-controls="contact-modal">컨설팅 신청</button>
     </div>
   </div>
 </section>
@@ -349,83 +384,80 @@ textarea{ min-height: 110px; resize: vertical; }
 <div class="band">
   <section class="intro container" aria-labelledby="intro-title">
     <div>
-      <h2 id="intro-title">한 줄 소개</h2>
-      <p class="lead">Freekitlab은 솔루션 수집–컨설팅–End-to-End 동반자십을 결합해, 자영업자의 노동·비용 구조를 <strong>린(Lean)</strong>하게 재설계합니다.</p>
+      <h2 id="intro-title">비전 & 미션</h2>
+      <p class="lead">사장님이 로봇을 경영하고 가게에 묶여있지 않는 세상을 꿈꿉니다. 정보의 비대칭을 해결하기 위하여, 첨단 솔루션을 수집하고 판매경로를 연결하며, 고객의 페인포인트를 찾아 해결합니다.</p>
     </div>
-    <div class="profile" role="img" aria-label="Freekitlab Profile Image">
-      <img src="images/프리킷랩.jpg" alt="Freekitlab Profile" loading="lazy" decoding="async">
+    <div class="tree-image">
+      <img src="/images/나노바나나 검은색배경나무.png" alt="" loading="lazy" decoding="async">
     </div>
   </section>
 </div>
 
 <!-- Core Features -->
 <section id="features" class="section container" aria-labelledby="features-title">
-  <h2 id="features-title">핵심기능</h2>
-  <p class="sub">앱 구성 로직을 중심으로 구매자·셀러·컨설턴트가 만나는 단일 플랫폼.</p>
+  <h2 id="features-title">핵심약속</h2>
+  <p class="sub">아낌없이 주는 나무를 표방합니다. 수수료 없는 해외직구 무료상담 서비스를 제공합니다. <br>
+    폐업시 프리킷랩에서 구매한 중고장비에 대한 중개판매 채널을 제공합니다. <br>
+     </p>
 
   <div class="features">
     <article class="card" aria-labelledby="f1">
-      <span class="badge" aria-hidden="true">구매자용 쇼핑몰</span>
-      <h3 id="f1">장비 탐색·견적·결제까지 원스톱</h3>
+      <span class="badge" aria-hidden="true">해외직구 무료 상담</span>
+      <h3 id="f1">가성비 솔루션 보급에 대한 집착</h3>
       <ul>
-        <li>로그인/회원가입(소셜), 카테고리/검색, 상세/후기</li>
-        <li>장바구니–PG 연동 결제, 주문/배송 추적</li>
-        <li>마이페이지: 주문·찜·1:1문의·리뷰·정부지원 게시판</li>
+        <li>해외 솔루션 수집 및 전파</li>
+        <li>해외장비 KC 인증 문제에 대한 도움</li>
+        <li>국내외 솔루션별 비교 및 추천</li>
       </ul>
-      <div class="mock" aria-hidden="true">
-        <div class="bar"></div>
-        <div class="row"><div class="box"></div><div class="box"></div></div>
-        <div class="grid"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
-      </div>
     </article>
 
     <article class="card" aria-labelledby="f2">
-      <span class="badge" aria-hidden="true">셀러 Admin</span>
-      <h3 id="f2">상품·주문·정산 자동화</h3>
+      <span class="badge" aria-hidden="true">중고장비 처리와 구매</span>
+      <h3 id="f2">투자비 절감과 리스크 고민</h3>
       <ul>
-        <li>입점 신청/계약/정산계좌 등록</li>
-        <li>상품 등록·관리, 주문→발주→송장→배송 상태</li>
-        <li>기간별 정산·수수료, 배너/프로모션 신청</li>
+        <li>폐업시 프리킷 구매장비 중개판매</li>
+        <li>양질의 중고장비 판매, 투자비절감</li>
+        <li>최대할인폭 제시</li>
       </ul>
-      <div class="mock" aria-hidden="true">
-        <div class="bar"></div>
-        <div class="row"><div class="box"></div><div class="box"></div></div>
-        <div class="row"><div class="box"></div><div class="box"></div></div>
-      </div>
     </article>
 
     <article class="card" aria-labelledby="f3">
-      <span class="badge" aria-hidden="true">컨설턴트 Hub</span>
-      <h3 id="f3">리드–실적–정산 대시보드</h3>
+      <span class="badge" aria-hidden="true">무료 정부지원금 컨설팅</span>
+      <h3 id="f3">정부지원금의 높은 문턱해소</h3>
       <ul>
-        <li>컨설턴트 신청/정보 관리, 역할 기반 권한(RBAC)</li>
-        <li>실적/매출 현황, 파트너 등급·후기 관리</li>
-        <li>정산 내역·세금계산서 연동, 알림톡/이메일</li>
+        <li>무료 정부지원 사업 홍보</li>
+        <li>정부지원사업 진행절차 가이드</li>
+        <li>지원금 유관 장비 판매</li>
       </ul>
-      <div class="mock" aria-hidden="true">
-        <div class="bar"></div>
-        <div class="grid"><div class="tile"></div><div class="tile"></div><div class="tile"></div></div>
-      </div>
     </article>
   </div>
 </section>
 
 <!-- Process -->
 <section id="process" class="section container" aria-labelledby="process-title">
-  <h2 id="process-title">도입 절차</h2>
-  <p class="sub">첫 설계부터 설치·운영·정산까지 End-to-End 동반자십.</p>
+  <h2 id="process-title">도입절차</h2>
+  <p class="sub">첫 상담부터 설치, 든든한 사후관리까지. 프리킷랩이 '동반자'가 되어 전 과정을 함께합니다.</p>
   <div class="steps">
     <div class="step">
-      <h4>1) 진단 & 번들 제안</h4>
-      <p>업종·규모·근무조 기반 진단 → 레퍼런스 번들/ROI 시나리오 제시.</p>
+      <h4>1:1 맞춤 컨설팅</h4>
+      <p>1) 업종, 매장 및 인력 기반 정밀 진단<br>
+      2) 최저가 비교 및 가성비 솔루션 추천<br>
+      3) 복수장비 구매 추가할인 여부 확인<br>
+    </p>
     </div>
     <div class="step">
-      <h4>2) 견적 & 지원금</h4>
-      <p>PG 연동 견적·결제 옵션, 정부지원 컨설팅/서류 가이드.</p>
+      <h4>사용자 옵션 선택</h4>
+      <p>1) 거품없는 견적제공 및 확인<br>
+        2) 결제옵션 확인(구매/렌탈)<br>
+        3) 정부지원금 연계검토 및 구매확정<br>
+      </p>
     </div>
     <div class="step">
-      <h4>3) 설치 & 운영</h4>
-      <p>설치 표준서, 원격 모니터링, AS 티켓·중고 매입보장 옵션.</p>
+      <h4>든든한 사후관리</h4>
+      <p>1) 메뉴얼에 따른 장비설치<br>
+        2) 원격 모니터링 및 신속한 AS 지원<br>
+        3) 폐업시 중고장비 처리 지원<br>
+      </p>
     </div>
   </div>
 </section>
@@ -436,47 +468,28 @@ textarea{ min-height: 110px; resize: vertical; }
   <div class="faq">
     <details open>
       <summary>정부 지원금 상담도 해주나요?</summary>
-      <p>네. 스마트상점/자동화 보조금 등 적합 사업을 매칭하고 신청·서류 작성 가이드를 제공합니다. 성공 사례는 공개해 신뢰를 축적합니다.</p>
+      <p>네. 스마트상점/자동화 보조금 등 적합 사업을 매칭하고 신청·서류 작성 가이드를 제공합니다. 프리킷랩과의 거래여부와 관계 없이 사장님의 성공을 지원합니다. 성공사례는 향후 공개될 수도 있습니다.</p>
     </details>
-    <details>
-      <summary>중고 매입보장은 어떻게 작동하나요?</summary>
-      <p>제조사와 공동부담 정책 합의 시 ‘중고 매입보장’ Tag를 부여합니다. 불가 장비도 중고 플랫폼에서 무료 노출을 지원합니다.</p>
+    <details open>
+      <summary>중고장비 처리는 어떻게 작동하나요?</summary>
+      <p>제조사와 공동부담 정책 합의 시 '중고 매입보장' Tag를 부여합니다. 중고 매입에 대한 정책은 제조사별로 다를 수 있습니다. 이와 별개로 프리킷랩에서 중고장비 판매 플랫폼을 운영하며, 판매장비에 대해서는 최저 수수료로 중개판매합니다.</p>
     </details>
-    <details>
-      <summary>정산과 수수료는 투명하게 관리되나요?</summary>
-      <p>배치 정산으로 셀러·컨설턴트 수수료를 자동 계산하고, 정산 대시보드에서 기간별 내역을 확인·증빙(세금계산서)까지 일괄 처리합니다.</p>
+    <details open>
+      <summary>컨설턴트 양성 및 지원은 어떻게 하나요?</summary>
+      <p>자영업자를 포함해서(투잡) 누구나 지원 가능합니다. 솔루션 교육은 추가로 진행되며, 최고의 대우를 약속합니다 </p>
     </details>
-    <details>
-      <summary>AS 품질과 리드타임 관리는 어떻게 하나요?</summary>
-      <p>AS 티켓·부품 리드타임을 지표로 관리합니다(TTF, TAT, NPS). 벤더/설치사별 편차를 추적해 지속 개선합니다.</p>
-    </details>
-  </div>
-</section>
-
-<!-- KPI -->
-<section class="section container" aria-labelledby="kpi-title">
-  <h2 id="kpi-title">KPI 예시</h2>
-  <div class="table-wrap" role="region" aria-label="KPI 표 스크롤 영역">
-    <table>
-      <thead>
-        <tr><th scope="col">분류</th><th scope="col">정의</th><th scope="col">핵심 관점</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>전환율</td><td>리드→견적→설치 완료</td><td>번들/채널별 비교, 페이백 연동</td></tr>
-        <tr><td>리드타임</td><td>주문→가동까지 일수</td><td>설치 표준/원격 지원 전후 개선폭</td></tr>
-        <tr><td>재구매/업셀</td><td>설치 90/180일 추가 구매</td><td>ROI 실현 구간과 상관분석</td></tr>
-        <tr><td>AS 품질</td><td>TTF·TAT·NPS</td><td>벤더/설치사별 편차 관리</td></tr>
-      </tbody>
-    </table>
   </div>
 </section>
 
 <!-- Final CTA -->
 <section id="cta" class="final" aria-labelledby="cta-title">
-  <h2 id="cta-title" class="big">사장님의 ‘로봇 경영’ 첫걸음, 오늘 시작하세요.</h2>
-  <p class="desc">업종·규모별 레퍼런스 번들과 지원금/중고보장 옵션까지, 한 번에 설계해 드립니다.</p>
+  <h2 id="cta-title" class="big">사장님의 '로봇 경영' 첫걸음, 오늘 시작하세요.</h2>
+  <p class="desc">투자 및 운영분석, 정부지원금, 중고처리 옵션까지, 한 번에 설계해 드립니다.</p>
   <!-- 동일 CTA 버튼도 모달로 연결 -->
-  <button class="cta" id="open-contact-2" type="button" aria-haspopup="dialog" aria-controls="contact-modal">30초 상담 요청하기</button>
+  <div class="final-actions">
+    <button class="cta" id="open-contact-2" type="button" aria-haspopup="dialog" aria-controls="contact-modal">컨설팅 신청하기</button>
+    <button class="cta secondary" type="button">컨설턴트 지원문의</button>
+  </div>
 </section>
 
 <footer role="contentinfo">
@@ -487,7 +500,7 @@ textarea{ min-height: 110px; resize: vertical; }
 <dialog class="modal" id="contact-modal" aria-labelledby="contact-title" aria-modal="true">
   <div class="modal-card" role="document">
     <div class="modal-header">
-      <h3 id="contact-title" class="modal-title">30초 상담 요청</h3>
+      <h3 id="contact-title" class="modal-title">컨설팅 신청</h3>
       <button class="modal-close" id="close-contact" type="button" aria-label="닫기">✕</button>
     </div>
 
@@ -508,17 +521,16 @@ textarea{ min-height: 110px; resize: vertical; }
       <div class="full">
         <label for="email">이메일 (선택)</label>
         <input id="email" name="email" type="email" inputmode="email" placeholder="you@example.com">
-        <p class="helper">제출 시 메일 앱이 열립니다. 로컬 메일 앱이 없는 경우 안내가 표시됩니다.</p>
+        <p class="helper">선택 사항입니다.</p>
       </div>
 
       <div class="full">
-        <label for="msg">간단 메모</label>
-        <textarea id="msg" name="msg" placeholder="관심 장비/매장 규모/예산 등 간단히 적어주세요." required></textarea>
+        <label for="msg">문의내용 (선택)</label>
+        <textarea id="msg" name="msg" placeholder="관심 장비/매장 규모/예산 등 간단히 적어주세요."></textarea>
       </div>
 
       <div class="form-actions full">
-        <button class="secondary" type="button" id="copy-fallback">내용 복사</button>
-        <button class="primary" type="submit">메일 앱 열기</button>
+        <button class="primary" type="submit">제출하기</button>
       </div>
     </form>
   </div>
@@ -581,8 +593,8 @@ modal?.addEventListener('click', (e)=>{
   if (!inDialog) closeModal();
 });
 
-/* Mailto submit */
-form?.addEventListener('submit', (e)=>{
+/* Form submit - 서버에 저장 */
+form?.addEventListener('submit', async (e)=>{
   e.preventDefault();
   // honeypot check
   if (hp?.value?.trim()) { showToast('스팸 의심 제출은 차단되었습니다.'); return; }
@@ -592,50 +604,67 @@ form?.addEventListener('submit', (e)=>{
   const email = (document.getElementById('email').value || '').trim();
   const msg   = (document.getElementById('msg').value || '').trim();
 
-  const subject = encodeURIComponent(`Freekitlab 30초 상담 요청 - ${name}`);
-  const bodyLines = [
-    `이름: ${name}`,
-    `연락처: ${phone}`,
-    email ? `이메일: ${email}` : null,
-    `메모: ${msg}`,
-    '',
-    '※ 본 메일은 Freekitlab 랜딩페이지에서 생성되었습니다.'
-  ].filter(Boolean);
-  const body = encodeURIComponent(bodyLines.join('\n'));
-
-  const mailto = `mailto:uzin@freekitlab.com?subject=${subject}&body=${body}`;
-
-  // 시도: 메일 앱 열기
-  try{
-    window.location.href = mailto;
-    showToast('메일 앱을 열고 있습니다…');
-    closeModal();
-  }catch(err){
-    showToast('메일 앱을 열 수 없습니다. 복사 후 직접 메일을 보내주세요.');
+  // 필수 항목 확인
+  if (!name || !phone) {
+    showToast('이름과 연락처는 필수입니다.');
+    return;
   }
-});
 
-/* Copy fallback */
-document.getElementById('copy-fallback')?.addEventListener('click', ()=>{
-  const name  = (document.getElementById('name').value || '').trim();
-  const phone = (document.getElementById('phone').value || '').trim();
-  const email = (document.getElementById('email').value || '').trim();
-  const msg   = (document.getElementById('msg').value || '').trim();
-  const text = [
-    `수신: uzin@freekitlab.com`,
-    `제목: Freekitlab 30초 상담 요청 - ${name}`,
-    '',
-    `이름: ${name}`,
-    `연락처: ${phone}`,
-    email ? `이메일: ${email}` : null,
-    `메모: ${msg}`
-  ].filter(Boolean).join('\n');
-
-  navigator.clipboard?.writeText(text).then(()=>{
-    showToast('문의 내용이 클립보드에 복사되었습니다. 메일앱에서 붙여넣기 하세요.');
-  }).catch(()=>{
-    showToast('복사 실패. 텍스트를 직접 선택해 복사해 주세요.');
-  });
+  try {
+    showToast('제출 중...');
+    
+    const requestData = {
+      name: name,
+      phone: phone,
+      email: email,
+      message: msg
+    };
+    
+    console.log('[클라이언트] 전송할 데이터:', requestData);
+    
+    const response = await fetch('/api/consultation', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json',
+      },
+      body: JSON.stringify(requestData)
+    });
+    
+    console.log('[클라이언트] 응답 상태:', response.status, response.statusText);
+    console.log('[클라이언트] 응답 Headers:', Object.fromEntries(response.headers.entries()));
+    
+    // 응답 상태 확인
+    if (!response.ok) {
+      let errorData;
+      try {
+        const text = await response.text();
+        console.log('[클라이언트] 응답 본문:', text);
+        errorData = JSON.parse(text);
+      } catch (e) {
+        console.error('[클라이언트] JSON 파싱 실패:', e);
+        errorData = { message: `서버 오류 (${response.status}): ${response.statusText}` };
+      }
+      showToast(errorData.message || `오류 (${response.status})`);
+      console.error('[클라이언트] Server error:', response.status, errorData);
+      return;
+    }
+    
+    const result = await response.json();
+    console.log('[클라이언트] 성공 응답:', result);
+    
+    if (result.status === 'success') {
+      showToast('접수되었습니다! 빠른 시일 내에 연락드리겠습니다.');
+      closeModal();
+      document.getElementById('contact-form').reset();
+    } else {
+      showToast(result.message || '오류가 발생했습니다.');
+    }
+    
+  } catch(err) {
+    console.error('[클라이언트] Network error:', err);
+    showToast(`연결 오류: ${err.message}. 서버가 실행 중인지 확인해주세요.`);
+  }
 });
 
 /* Toast helper */
@@ -649,3 +678,4 @@ function showToast(message){
 </script>
 </body>
 </html>
+
